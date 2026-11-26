@@ -1,30 +1,383 @@
-local P,I,R,SG,CG,D,RS,L=game:GetService("Players"),game:GetService("UserInputService"),game:GetService("RunService"),game:GetService("StarterGui"),game:GetService("CoreGui"),game:GetService("Debris"),game:GetService("ReplicatedStorage"),game:GetService("Lighting");local lp,m,cam=P.LocalPlayer,P.LocalPlayer:GetMouse(),workspace.CurrentCamera;if CG:FindFirstChild("PainelCNP") then CG.PainelCNP:Destroy() end;if CG:FindFirstChild("Erick_Ultra_Hub") then CG.Erick_Ultra_Hub:Destroy() end;if CG:FindFirstChild("Lup_Jump_Hub") then CG.Lup_Jump_Hub:Destroy() end;local C1,C2,C3,C4,C5,C6,C7,C8,CON,COFF=Color3.fromRGB(16,16,20),Color3.fromRGB(24,20,34),Color3.fromRGB(30,26,42),Color3.fromRGB(115,62,195),Color3.fromRGB(22,18,32),Color3.fromRGB(152,102,235),Color3.fromRGB(255,255,255),Color3.fromRGB(240,235,255),Color3.fromRGB(82,198,118),Color3.fromRGB(228,84,96);local SZ={Pequeno=UDim2.new(0,205,0,295),Medio=UDim2.new(0,245,0,350),Grande=UDim2.new(0,275,0,385)};local CYC={"Pequeno","Medio","Grande"};local U={coins="https://raw.githubusercontent.com/oipdrin971-source/mm2-script/main/anti_coins_mm2.lua",yd7="https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua",alt="https://pastefy.app/w0BKiXTR/raw",mira="https://pastebin.com/raw/UVB1v26b",v2="https://scriptblox.com/raw/Universal-Script-Gold-bomb-script-223141"};local dev,szN,spOn,man,jpOn,ltOn,blOn,acOn,nrOn,miraOn=nil,"Medio",false,false,false,false,false,false,false,false;local ld,ch,hu,rp,bWS,dir,pTurn,lBst,lBl,lYaw={},{},nil,nil,nil,16,nil,nil,0,0,nil;local lBak,lObjs,emAct,emTr,hS,hAD,deb=nil,{},false,{},false,false,false;local c1,c2,c3,c4,c5;local function nt(x,d) pcall(function() SG:SetCore("SendNotification",{Title="PAINEL CNP BIEL975OI",Text=tostring(x),Duration=d or 2}) end) end;local function fl(v) local x=Vector3.new(v.X,0,v.Z);return x.Magnitude<1e-6 and Vector3.zero or x.Unit end;local function wr(a) return (a+math.pi)%(2*math.pi)-math.pi end;local function yw() local v=cam.CFrame.LookVector;return math.atan2(v.X,v.Z) end;local function air() return hu and hu.FloorMaterial==Enum.Material.Air and hu:GetState()~=Enum.HumanoidStateType.Climbing end;local function blk(d) if not rp or not ch then return false end;local p=RaycastParams.new();p.FilterType=Enum.RaycastFilterType.Exclude;p.FilterDescendantsInstances={ch};return workspace:Raycast(rp.Position,d*2.5,p)~=nil end;local function sv(v) if rp then rp.AssemblyLinearVelocity=Vector3.new(v.X,math.clamp(v.Y,-90,90),v.Z) end end;local function isSh() local bp=lp:FindFirstChild("Backpack");if bp and (bp:FindFirstChild("Sheriff") or bp:FindFirstChild("Gun")) then return true end;if ch and (ch:FindFirstChild("Sheriff") or ch:FindFirstChild("Gun")) then return true end;local ok,res=pcall(function() local rf=RS:FindFirstChild("GetPlayerData") or RS:FindFirstChildWhichIsA("RemoteFunction",true);if rf and rf:IsA("RemoteFunction") then local d=rf:InvokeServer();if type(d)=="table" and d[lp.Name] and tostring(d[lp.Name].Role):lower():find("sheriff",1,true) then return true end end;for _,v in ipairs(lp:GetDescendants()) do if (v:IsA("StringValue") or v:IsA("ObjectValue")) and tostring(v.Value):lower():find("sheriff",1,true) then return true end end;return false end);return ok and res or false end;local function hasWB() if ch then for _,o in ipairs(ch:GetChildren()) do if o:IsA("Tool") and o.Name:lower():find("balloon",1,true) then return true end end end;local bp=lp:FindFirstChild("Backpack");if bp then for _,o in ipairs(bp:GetChildren()) do if o:IsA("Tool") and o.Name:lower():find("balloon",1,true) then return true end end end;return false end;local function isYungEm(tr) if not tr then return false end;local nm=(tr.Name or ""):lower();local id=tr.Animation and tostring(tr.Animation.AnimationId or ""):lower() or "";if nm:find("yungblud",1,true) or nm:find("salto",1,true) or nm:find("feliz",1,true) or id:find("yungblud",1,true) then return true end;local p=tr.Priority;return (p==Enum.AnimationPriority.Action or p==Enum.AnimationPriority.Action2 or p==Enum.AnimationPriority.Action3 or p==Enum.AnimationPriority.Action4) and not nm:find("dance",1,true) and not id:find("dance",1,true) end;local function setGraf(on) if on then if not lBak then local t={};for _,i in ipairs(L:GetChildren()) do if i:IsA("PostEffect") or i:IsA("Sky") or i:IsA("Atmosphere") then pcall(function() table.insert(t,i:Clone()) end) end end;lBak={B=L.Brightness,A=L.Ambient,O=L.OutdoorAmbient,G=L.GlobalShadows,T=L.ClockTime,C=t} end;for _,o in ipairs(lObjs) do if o and o.Parent then o:Destroy() end end;lObjs={};for _,i in ipairs(L:GetChildren()) do if i:IsA("PostEffect") or i:IsA("Sky") or i:IsA("Atmosphere") then i:Destroy() end end;L.Brightness,L.Ambient,L.OutdoorAmbient,L.GlobalShadows,L.ClockTime=2.5,Color3.fromRGB(145,145,145),Color3.fromRGB(165,165,165),false,14;local cc=Instance.new("ColorCorrectionEffect",L);cc.Brightness,cc.Contrast,cc.Saturation=0.06,0.18,0.25;local bl=Instance.new("BloomEffect",L);bl.Intensity,bl.Size,bl.Threshold=0.3,20,1.3;table.insert(lObjs,cc);table.insert(lObjs,bl) else for _,o in ipairs(lObjs) do if o and o.Parent then o:Destroy() end end;lObjs={};if not lBak then return end;for _,i in ipairs(L:GetChildren()) do if i:IsA("PostEffect") or i:IsA("Sky") or i:IsA("Atmosphere") then i:Destroy() end end;L.Brightness,L.Ambient,L.OutdoorAmbient,L.GlobalShadows,L.ClockTime=lBak.B,lBak.A,lBak.O,lBak.G,lBak.T;for _,c in ipairs(lBak.C) do pcall(function() c:Clone().Parent=L end) end end end;local mf,bs,sbs,stL,exF,exAnti,exRel,jpF,jpBtn={},{}
-local function setJp(v) jpOn=v;if not jpOn and hu then hu.WalkSpeed=bWS;direcaoPressionada=nil end;if jpBtn then jpBtn.Text=jpOn and "Sistema: ON" or "Sistema: OFF";jpBtn.TextColor3=C7;jpBtn.BackgroundColor3=jpOn and CON or COFF end;if bs.jp then bs.jp.Text=jpOn and "Impulso no Pulo: ON" or "Impulso no Pulo: OFF";bs.jp.TextColor3=C7;bs.jp.BackgroundColor3=jpOn and CON or COFF end;if jpF then jpF.Visible=jpOn end end;local direcaoPressionada=nil;local function isMovingForward() if not hu then return false end;local mv=hu.MoveDirection;if mv.Magnitude<=0.01 then return false end;local c2m=workspace.CurrentCamera or cam;if not c2m then return false end;return c2m.CFrame.LookVector:Dot(mv.Unit)>0.5 end
-local function rsz(n) local s=SZ[n] or SZ.Medio;szN=n;if mf then mf.Size=s;mf.Position=UDim2.new(0.5,-s.X.Offset/2,0.5,-s.Y.Offset/2) end;if bs.sz then bs.sz.Text="Tamanho: "..szN end;for k,b in pairs(sbs) do if b then b.BackgroundColor3=(szN==k) and C4 or C3 end end end
-local function ui() for _,r in ipairs({{bs.sp,spOn,"Old Speed: ON","Old Speed: OFF"},{bs.jp,jpOn,"Impulso no Pulo: ON","Impulso no Pulo: OFF"},{bs.lt,ltOn,"2020 grafico: ON","2020 grafico: OFF"},{bs.ac,acOn,"ANTI-CLICK: ON","ANTI-CLICK: OFF"},{bs.nr,nrOn,"NO RELOAD: ON","NO RELOAD: OFF"},{bs.bl,blOn,"Water Balloon: ON","Water Balloon: OFF"},{bs.mira,miraOn,"Mira Mobilador: ON","Mira Mobilador: OFF"}}) do if r[1] then r[1].Text=r[2] and r[3] or r[4];r[1].TextColor3=C7;r[1].BackgroundColor3=r[2] and CON or COFF end end;if exAnti then exAnti.Text=acOn and "ANTI-CLICK: ON" or "ANTI-CLICK: OFF";exAnti.TextColor3=C7;exAnti.BackgroundColor3=acOn and CON or COFF end;if exRel then exRel.Text=nrOn and "NO RELOAD: ON" or "NO RELOAD: OFF";exRel.TextColor3=C7;exRel.BackgroundColor3=nrOn and CON or COFF end;if exF then exF.Visible=acOn end;if jpBtn then jpBtn.Text=jpOn and "Sistema: ON" or "Sistema: OFF";jpBtn.TextColor3=C7;jpBtn.BackgroundColor3=jpOn and CON or COFF end;if jpF then jpF.Visible=jpOn end;for k,t in pairs({coins="Anti Coins MM2",yd7="7yd7 Emotes",alt="Painel Alternativo",v2="Painel v2"}) do if bs[k] then bs[k].Text=ld[k] and (t..": ATIVO") or (t..": EXECUTAR");bs[k].TextColor3=C7;bs[k].BackgroundColor3=ld[k] and C4 or C3 end end;if stL then stL.Text="Status: "..(spOn and "ATIVADO" or "DESATIVADO").." (Old Speed)"..(dev and (" | "..dev) or "") end;rsz(szN) end
-local function run(k,t) if ld[k] then nt(t.." já executado.");return end;local ok,e=pcall(function() local f=loadstring(game:HttpGet(U[k]));if type(f)=="function" then f() else error("inválido") end end);if ok then ld[k]=true;ui();nt(t.." carregado.") else nt("Erro "..t..": "..tostring(e),3) end end
-local function runMira() if ld.mira then return end;local ok,e=pcall(function() local f=loadstring(game:HttpGet(U.mira));if type(f)=="function" then f() else error("inválido") end end);if ok then ld.mira=true;nt("Mira Mobilador ativada (Xerife).") else nt("Erro Mira Mobilador: "..tostring(e),3) end end
-local function tgMira() miraOn=not miraOn;ui();if miraOn then if isSh() then runMira() else nt("Mira Mobilador armada: ativa só como Xerife.") end else nt("Mira Mobilador desativada.") end end
-local function mkBl(cf,a,sc) local s=sc or 1;local md=Instance.new("Model");md.Name="WaterBalloonModel";local b=Instance.new("Part",md);b.Name,b.Shape,b.Size,b.Material,b.Color,b.Transparency,b.Anchored,b.CanCollide,b.CanQuery,b.CanTouch,b.CFrame="Body",Enum.PartType.Ball,Vector3.new(1.38*s,1.52*s,1.34*s),Enum.Material.SmoothPlastic,Color3.fromRGB(236,92,114),0.02,a,false,false,false,cf;local bm=Instance.new("SpecialMesh",b);bm.MeshType,bm.Scale=Enum.MeshType.Sphere,Vector3.new(1.04,1.08,0.98);local tp=Instance.new("Part",md);tp.Name,tp.Shape,tp.Size,tp.Material,tp.Color,tp.Transparency,tp.Anchored,tp.CanCollide,tp.CanQuery,tp.CanTouch,tp.CFrame="TopNeck",Enum.PartType.Ball,Vector3.new(0.88*s,0.82*s,0.84*s),Enum.Material.SmoothPlastic,Color3.fromRGB(236,92,114),0.02,a,false,false,false,cf*CFrame.new(0,0.44*s,0);local tm=Instance.new("SpecialMesh",tp);tm.MeshType,tm.Scale=Enum.MeshType.Sphere,Vector3.new(1.0,1.15,0.92);local k=Instance.new("Part",md);k.Name,k.Size,k.Material,k.Color,k.Transparency,k.Anchored,k.CanCollide,k.CanQuery,k.CanTouch,k.CFrame="Knot",Vector3.new(0.76*s,0.16*s,0.52*s),Enum.Material.SmoothPlastic,Color3.fromRGB(132,36,54),0.02,a,false,false,false,cf*CFrame.new(0,0.84*s,0);local km=Instance.new("SpecialMesh",k);km.MeshType,km.Scale=Enum.MeshType.Sphere,Vector3.new(1.18,0.45,0.88);for _,pt in ipairs({tp,k}) do local w=Instance.new("WeldConstraint",b);w.Part0,w.Part1=b,pt end;md.PrimaryPart=b;return md,b end
-local function spl(pos) local p=Instance.new("Part",workspace);p.Size,p.Position,p.Anchored,p.CanCollide,p.CanQuery,p.CanTouch,p.Transparency=Vector3.new(0.5,0.5,0.5),pos,true,false,false,false,1;local e=Instance.new("ParticleEmitter",p);e.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(236,92,114)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(130,215,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(240,250,255))});e.Size=NumberSequence.new({NumberSequenceKeypoint.new(0,0.55),NumberSequenceKeypoint.new(0.5,1.0),NumberSequenceKeypoint.new(1,0.08)});e.Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,0.1),NumberSequenceKeypoint.new(1,1)});e.Lifetime,e.Speed,e.SpreadAngle,e.Drag,e.Rate=NumberRange.new(0.25,0.55),NumberRange.new(10,24),Vector2.new(180,180),6,0;e:Emit(30);D:AddItem(p,1.2) end
-local function popGrad(md,b,pos) if not md or not md.Parent then return end;task.spawn(function() local t0=os.clock();local dur=0.55;while md and md.Parent and os.clock()-t0<dur do local a=(os.clock()-t0)/dur;for _,pt in ipairs(md:GetDescendants()) do if pt:IsA("BasePart") then pt.Transparency=math.clamp(0.02+a*0.98,0,1);pt.Size=pt.Size*(1+a*0.14) end end;task.wait(0.05) end;if md and md.Parent then spl(pos or (b and b.Position) or Vector3.zero);md:Destroy() end end) end
-local function aimPt(orig) local best,bd=nil,140;for _,pl in ipairs(P:GetPlayers()) do if pl~=lp and pl.Character then local hrp=pl.Character:FindFirstChild("HumanoidRootPart") or pl.Character:FindFirstChild("Head");local hum=pl.Character:FindFirstChildOfClass("Humanoid");if hrp and hum and hum.Health>0 then local sp,vis=cam:WorldToViewportPoint(hrp.Position);if vis then local mp=I:GetMouseLocation();local d2=(Vector2.new(sp.X,sp.Y)-mp).Magnitude;if d2<bd then bd=d2;best=hrp.Position end end end end;if best then return best end;if m and m.Hit then return m.Hit.Position end;return orig+cam.CFrame.LookVector*55 end
-local function thr(orig) if os.clock()-lBl<0.2 then return end;lBl=os.clock();if hu then pcall(function() local an=Instance.new("Animation");an.AnimationId="rbxassetid://507768375";local tr=hu:LoadAnimation(an);tr:Play(0.08,1,1.65) end) end;local tg=aimPt(orig);local d=tg-orig;d=d.Magnitude<0.1 and cam.CFrame.LookVector or d.Unit;local md,b=mkBl(CFrame.new(orig+d*2.2,tg),true,1);md.Parent=workspace;local tr=Instance.new("Trail",b);local a0,a1=Instance.new("Attachment",b),Instance.new("Attachment",b);a0.Position,a1.Position=Vector3.new(0,0.45,0),Vector3.new(0,-0.45,0);tr.Attachment0,tr.Attachment1,tr.Lifetime=a0,a1,0.18;local vel,rp2,dn,hitP,turnHit,lastY,cn=d*105+Vector3.new(0,7,0),RaycastParams.new(),false,nil,false,yw();rp2.FilterType=Enum.RaycastFilterType.Exclude;rp2.FilterDescendantsInstances={ch,md};cn=R.RenderStepped:Connect(function(dt) if dn or not md.Parent or not b.Parent then if cn then cn:Disconnect() end;return end;local curY=yw();local dDeg=math.abs(math.deg(wr(curY-lastY)));lastY=curY;if dDeg>=6 then turnHit=true end;if not hitP then vel+=Vector3.new(0,-workspace.Gravity*0.35*dt,0);local st=vel*dt;local h=workspace:Raycast(b.Position,st,rp2);if h then hitP=h.Position;if turnHit then dn=true;if cn then cn:Disconnect() end;popGrad(md,b,hitP);return end end;local np=b.Position+st;b.CFrame=CFrame.new(np,np+vel.Unit) else if turnHit then dn=true;if cn then cn:Disconnect() end;popGrad(md,b,hitP) end end);D:AddItem(md,5) end
-local function rmBl() local bp=lp:FindFirstChild("Backpack");if bp and bp:FindFirstChild("Water Balloon") then bp["Water Balloon"]:Destroy() end;if ch and ch:FindFirstChild("Water Balloon") then ch["Water Balloon"]:Destroy() end end
-local function setBl(v) blOn=v;pcall(function() SG:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack,true) end);rmBl();if not v then ui();nt("Water Balloon removido.");return end;local bp=lp:FindFirstChild("Backpack");if not bp then ui();return end;local t=Instance.new("Tool",bp);t.Name,t.RequiresHandle,t.CanBeDropped="Water Balloon",true,false;local md,h=mkBl(CFrame.new(),false,0.88);h.Name="Handle";for _,pt in ipairs(md:GetChildren()) do if pt:IsA("BasePart") then pt.Anchored=false;pt.CanCollide=false;pt.Parent=t end end;md:Destroy();t.Equipped:Connect(function() if rp then h.CFrame=rp.CFrame*CFrame.new(0,1.2,-1.2) end end);t.Activated:Connect(function() if blOn then thr(h and h.Position or (rp and rp.Position+Vector3.new(0,2,0))) end end);if hu then pcall(function() hu:EquipTool(t) end) end;ui();nt("Water Balloon ativado.") end
-local function setSp(v,r,fb) if fb~=nil then man=v end;if spOn==v then ui();return end;spOn,pTurn=v,nil;ui();nt("Old Speed "..(v and "ATIVADO" or "DESATIVADO").." ("..(r or "botão")..")") end
-local function syncCombo() if deb then return end;deb=true;task.delay(0.08,function() deb=false end);if man then setSp(true,"botão ON") elseif emAct and hasWB() then setSp(true,"Old Speed + Water Balloon") else setSp(false,"sem emote/Water Balloon") end end
-local function hookCh(c) ch,hu,rp=c,c:WaitForChild("Humanoid"),c:WaitForChild("HumanoidRootPart");bWS=hu.WalkSpeed;dir,pTurn,lBst,lYaw,spOn,direcaoPressionada=nil,nil,0,yw(),man,nil;if not jpOn then hu.WalkSpeed=bWS end;emAct,emTr=false,{};if c1 then c1:Disconnect() end;c1=hu.AnimationPlayed:Connect(function(tr) if isYungEm(tr) then emTr[tr],emAct=true,true;syncCombo();tr.Stopped:Connect(function() emTr[tr]=nil;emAct=false;for x in pairs(emTr) do if x and x.IsPlaying then emAct=true;break end end;syncCombo() end) end end);local function rg(t) if t:IsA("Tool") and t.Name=="Gun" and not t:GetAttribute("Gx") then t:SetAttribute("Gx",true) end end;for _,x in ipairs(c:GetChildren()) do rg(x) end;c.ChildAdded:Connect(rg);local bp=lp:WaitForChild("Backpack");for _,x in ipairs(bp:GetChildren()) do rg(x) end;bp.ChildAdded:Connect(rg);if c2 then c2:Disconnect() end;if c3 then c3:Disconnect() end;c2=c.ChildAdded:Connect(function(o) if o:IsA("Tool") then syncCombo() end end);c3=c.ChildRemoved:Connect(function(o) if o:IsA("Tool") then syncCombo() end end);if c4 then c4:Disconnect() end;c4=hu.Jumping:Connect(function() if rp and rp.CFrame.UpVector.Y<0.7 and hS and hAD then local v=rp.AssemblyLinearVelocity;sv(Vector3.new(v.X,170,v.Z)) end end);if c5 then c5:Disconnect() end;c5=hu.Jumping:Connect(function() if not jpOn or not hu then return end;if direcaoPressionada~=nil or (hu.MoveDirection.Magnitude>0.01 and not isMovingForward()) then hu.WalkSpeed=bWS+300 end end);hu.StateChanged:Connect(function(_,ns) if ns==Enum.HumanoidStateType.Landed and hu then hu.WalkSpeed=bWS end end);if blOn then setBl(true) end;if miraOn and isSh() then runMira() end;ui() end
-I.InputBegan:Connect(function(inp,g) if g then return end;if inp.KeyCode==Enum.KeyCode.A or inp.KeyCode==Enum.KeyCode.D then dir,hAD,direcaoPressionada=inp.KeyCode==Enum.KeyCode.A and "A" or "D",true,inp.KeyCode==Enum.KeyCode.A and "A" or "D";if air() then pTurn={t0=os.clock(),yaw=yw()} end elseif inp.KeyCode==Enum.KeyCode.S then dir,hS,direcaoPressionada="S",true,"S" elseif inp.KeyCode==Enum.KeyCode.R then setJp(not jpOn) end end)
-I.InputEnded:Connect(function(inp) if inp.KeyCode==Enum.KeyCode.A or inp.KeyCode==Enum.KeyCode.D then hAD=false;if dir=="A" or dir=="D" then dir=nil end;if direcaoPressionada=="A" or direcaoPressionada=="D" then direcaoPressionada=nil end elseif inp.KeyCode==Enum.KeyCode.S then hS=false;if dir=="S" then dir=nil end;if direcaoPressionada=="S" then direcaoPressionada=nil end end)
-R.Heartbeat:Connect(function(dt) local ny=yw();local dy=lYaw and math.abs(math.deg(wr(ny-lYaw))) or 0;lYaw=ny;if miraOn and not ld.mira and isSh() then runMira() end;if not hu or not rp or not air() then pTurn=nil;return end;local md,cf,crv=hu.MoveDirection,fl(cam.CFrame.LookVector),fl(cam.CFrame.RightVector);if spOn and md.Magnitude>=0.05 and not (md:Dot(cf)>=0.92 and math.abs(md:Dot(crv))<=0.12) then local d=fl(md);if not blk(d) then local ts=math.clamp(dy*2.2,0,45);local mx=210+ts;local ac=210+ts*3;local v=rp.AssemblyLinearVelocity;local al=v:Dot(d);if al<mx then sv(v+d*math.min(ac*dt,mx-al)) end end end;if pTurn then if os.clock()-pTurn.t0>0.35 then pTurn=nil elseif spOn and os.clock()-lBst>=0.2 and math.abs(math.deg(wr(yw()-pTurn.yaw)))>=50 then local d=fl((-fl(rp.CFrame.RightVector))+(-fl(rp.CFrame.LookVector)));if not blk(d) then sv(rp.AssemblyLinearVelocity+d*110);lBst=os.clock() end;pTurn=nil end end end
-R.RenderStepped:Connect(function() local c=lp.Character;local t=c and c:FindFirstChildOfClass("Tool");if not t then return end;t.Enabled=not acOn;if acOn then for _,v in pairs(t:GetDescendants()) do if v:IsA("BasePart") then v.CanTouch=false end end end;if nrOn then for _,o in pairs(t:GetDescendants()) do if o.Name=="Reloading" or o.Name=="Debounce" or o.Name=="Delay" then if o:IsA("BoolValue") then o.Value=false elseif o:IsA("NumberValue") then o.Value=0 end end end;local h=c:FindFirstChildOfClass("Humanoid");if h then for _,a in pairs(h:GetPlayingAnimationTracks()) do if a.Name:lower():find("reload") then a:Stop() end end end end end)
-local gui=Instance.new("ScreenGui",CG);gui.Name,gui.ResetOnSpawn="PainelCNP",false;local function drg(g) local d,di,ds,sp2;g.InputBegan:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then d,ds,sp2=true,i.Position,g.Position;i.Changed:Connect(function() if i.UserInputState==Enum.UserInputState.End then d=false end end) end end);g.InputChanged:Connect(function(i) if i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType.Touch then di=i end end);I.InputChanged:Connect(function(i) if i==di and d then local dl=i.Position-ds;g.Position=UDim2.new(sp2.X.Scale,sp2.X.Offset+dl.X,sp2.Y.Scale,sp2.Y.Offset+dl.Y) end end) end;local function st(o,bg,tc,rad,th) if bg then o.BackgroundColor3=bg end;if tc then o.TextColor3=tc end;if rad then Instance.new("UICorner",o).CornerRadius=rad end;if th then local s=Instance.new("UIStroke",o);s.Color,s.Thickness=C6,th end end
-local exGui=Instance.new("ScreenGui",CG);exGui.Name,exGui.ResetOnSpawn="Erick_Ultra_Hub",false;exF=Instance.new("Frame",exGui);exF.Size,exF.Position,exF.BorderSizePixel,exF.Visible=UDim2.new(0,225,0,155),UDim2.new(0.5,145,0.4,0),0,false;st(exF,C1,nil,UDim.new(0,10),1.5);drg(exF);local exHd=Instance.new("TextLabel",exF);exHd.Size,exHd.Text,exHd.Font,exHd.TextSize=UDim2.new(1,0,0,34),"ANTI-CLICK / NO RELOAD",Enum.Font.GothamBold,12;st(exHd,C2,C7,UDim.new(0,10));local exCl=Instance.new("TextButton",exHd);exCl.Size,exCl.Position,exCl.BackgroundTransparency,exCl.Text,exCl.Font,exCl.TextSize=UDim2.new(0,28,0,34),UDim2.new(1,-28,0,0),1,"✕",Enum.Font.GothamBold,13;st(exCl,nil,C7);exCl.MouseButton1Click:Connect(function() acOn=false;ui() end);exAnti=Instance.new("TextButton",exF);exAnti.Size,exAnti.Position,exAnti.Font,exAnti.TextSize=UDim2.new(0.9,0,0,36),UDim2.new(0.05,0,0.32,0),Enum.Font.GothamSemibold,13;st(exAnti,COFF,C7,UDim.new(0,6),1);exAnti.MouseButton1Click:Connect(function() acOn=not acOn;ui() end);exRel=Instance.new("TextButton",exF);exRel.Size,exRel.Position,exRel.Font,exRel.TextSize=UDim2.new(0.9,0,0,36),UDim2.new(0.05,0,0.65,0),Enum.Font.GothamSemibold,13;st(exRel,COFF,C7,UDim.new(0,6),1);exRel.MouseButton1Click:Connect(function() nrOn=not nrOn;ui() end)
-local jpGui=Instance.new("ScreenGui",CG);jpGui.Name,jpGui.ResetOnSpawn="Lup_Jump_Hub",false;jpF=Instance.new("Frame",jpGui);jpF.Size,jpF.Position,jpF.BorderSizePixel,jpF.Visible=UDim2.new(0,210,0,132),UDim2.new(0.5,-340,0.4,0),0,false;st(jpF,C1,nil,UDim.new(0,10),1.5);drg(jpF);local jpHd=Instance.new("TextLabel",jpF);jpHd.Size,jpHd.Text,jpHd.Font,jpHd.TextSize=UDim2.new(1,0,0,34),"IMPULSO NO PULO • LUP",Enum.Font.GothamBold,12;st(jpHd,C2,C7,UDim.new(0,10));local jpCl=Instance.new("TextButton",jpHd);jpCl.Size,jpCl.Position,jpCl.BackgroundTransparency,jpCl.Text,jpCl.Font,jpCl.TextSize=UDim2.new(0,28,0,34),UDim2.new(1,-28,0,0),1,"✕",Enum.Font.GothamBold,13;st(jpCl,nil,C7);jpCl.MouseButton1Click:Connect(function() setJp(false) end);jpBtn=Instance.new("TextButton",jpF);jpBtn.Size,jpBtn.Position,jpBtn.Font,jpBtn.TextSize=UDim2.new(0.9,0,0,38),UDim2.new(0.05,0,0.36,0),Enum.Font.GothamBold,13;st(jpBtn,COFF,C7,UDim.new(0,6),1);jpBtn.MouseButton1Click:Connect(function() setJp(not jpOn) end);local jpSub=Instance.new("TextLabel",jpF);jpSub.Size,jpSub.Position,jpSub.BackgroundTransparency,jpSub.Text,jpSub.Font,jpSub.TextSize=UDim2.new(1,-12,0,22),UDim2.new(0,6,0.74,0),1,"Tecla R • A / D / S • +300",Enum.Font.GothamSemibold,11;st(jpSub,nil,C8)
-local tog=Instance.new("TextButton",gui);tog.Size,tog.Position,tog.Text,tog.TextSize,tog.Visible=UDim2.new(0,44,0,44),UDim2.new(0.05,0,0.25,0),"CNP",13,false;st(tog,C5,C7,UDim.new(1,0),1.5);drg(tog);mf=Instance.new("Frame",gui);mf.Size,mf.Position,mf.BorderSizePixel,mf.Visible=SZ.Medio,UDim2.new(0.5,-122,0.5,-175),0,false;st(mf,C1,nil,UDim.new(0,10),1.5);drg(mf);local hd=Instance.new("Frame",mf);hd.Size,hd.BorderSizePixel=UDim2.new(1,0,0,44),0;st(hd,C2,nil,UDim.new(0,10));local ttl=Instance.new("TextLabel",hd);ttl.Size,ttl.Position,ttl.BackgroundTransparency,ttl.Text,ttl.Font,ttl.TextSize,ttl.TextXAlignment=UDim2.new(1,-34,0,22),UDim2.new(0,10,0,2),1,"PAINEL CNP BIEL975OI",Enum.Font.GothamBold,12,Enum.TextXAlignment.Left;st(ttl,nil,C7);local sub=Instance.new("TextLabel",hd);sub.Size,sub.Position,sub.BackgroundTransparency,sub.Text,sub.Font,sub.TextSize,sub.TextXAlignment=UDim2.new(1,-34,0,18),UDim2.new(0,10,0,22),1,"TikTok: _longliifee",Enum.Font.GothamSemibold,11,Enum.TextXAlignment.Left;st(sub,nil,C8);local cl=Instance.new("TextButton",hd);cl.Size,cl.Position,cl.BackgroundTransparency,cl.Text,cl.Font,cl.TextSize=UDim2.new(0,30,0,44),UDim2.new(1,-30,0,0),1,"✕",Enum.Font.GothamBold,14;st(cl,nil,C7);cl.MouseButton1Click:Connect(function() mf.Visible=false end);tog.MouseButton1Click:Connect(function() mf.Visible=not mf.Visible end)
-local ct=Instance.new("ScrollingFrame",mf);ct.Size,ct.Position,ct.BackgroundTransparency,ct.ScrollBarThickness,ct.ScrollBarImageColor3,ct.CanvasSize,ct.AutomaticCanvasSize=UDim2.new(1,-16,1,-54),UDim2.new(0,8,0,49),1,4,C6,UDim2.new(0,0,0,0),Enum.AutomaticSize.Y;local ll=Instance.new("UIListLayout",ct);ll.Padding,ll.SortOrder=UDim.new(0,6),Enum.SortOrder.LayoutOrder;stL=Instance.new("TextLabel",ct);stL.Size,stL.BackgroundTransparency,stL.Text,stL.Font,stL.TextSize=UDim2.new(1,-4,0,20),1,"Status: DESATIVADO (Old Speed)",Enum.Font.GothamSemibold,12;st(stL,nil,C8)
-local function mkB(t,h,fs) local b=Instance.new("TextButton",ct);b.Size,b.Text,b.Font,b.TextSize=UDim2.new(1,-4,0,h or 35),t,Enum.Font.GothamSemibold,fs or 13;st(b,C3,C7,UDim.new(0,6),1);return b end;bs.sz=mkB("Tamanho: Medio");bs.sz.MouseButton1Click:Connect(function() rsz(CYC[((table.find(CYC,szN) or 2)%#CYC)+1]) end);local sr=Instance.new("Frame",ct);sr.Size,sr.BackgroundTransparency=UDim2.new(1,-4,0,30),1;local rl=Instance.new("UIListLayout",sr);rl.FillDirection,rl.HorizontalAlignment,rl.Padding=Enum.FillDirection.Horizontal,Enum.HorizontalAlignment.Center,UDim.new(0,5);for _,g in ipairs({{"Peq","Pequeno"},{"Med","Medio"},{"Grd","Grande"}}) do local sb=Instance.new("TextButton",sr);sb.Size,sb.Text,sb.Font,sb.TextSize=UDim2.new(0.32,0,1,0),g[1],Enum.Font.GothamSemibold,11;st(sb,C3,C7,UDim.new(0,6),1);sb.MouseButton1Click:Connect(function() rsz(g[2]) end);sbs[g[2]]=sb end
-bs.sp=mkB("Old Speed: OFF");bs.sp.MouseButton1Click:Connect(function() setSp(not spOn,"botão ON/OFF",true) end);bs.jp=mkB("Impulso no Pulo: OFF");bs.jp.MouseButton1Click:Connect(function() setJp(not jpOn) end);bs.inc=mkB("Impulso Inclinado");bs.inc.MouseButton1Click:Connect(function() if rp then local v=rp.AssemblyLinearVelocity;sv(Vector3.new(v.X,170,v.Z)) end end);bs.lt=mkB("2020 grafico: OFF");bs.lt.MouseButton1Click:Connect(function() ltOn=not ltOn;setGraf(ltOn);ui();nt(ltOn and "2020 grafico ativado." or "Gráfico restaurado.") end);bs.coins=mkB("Anti Coins MM2: EXECUTAR");bs.coins.MouseButton1Click:Connect(function() run("coins","Anti Coins MM2") end);bs.ac=mkB("ANTI-CLICK: OFF");bs.ac.MouseButton1Click:Connect(function() acOn=not acOn;ui() end);bs.nr=mkB("NO RELOAD: OFF");bs.nr.MouseButton1Click:Connect(function() nrOn=not nrOn;ui() end);bs.bl=mkB("Water Balloon: OFF");bs.bl.MouseButton1Click:Connect(function() setBl(not blOn) end);bs.mira=mkB("Mira Mobilador: OFF");bs.mira.MouseButton1Click:Connect(tgMira);bs.yd7=mkB("7yd7 Emotes: EXECUTAR");bs.yd7.MouseButton1Click:Connect(function() run("yd7","7yd7 Emotes") end);bs.alt=mkB("Painel Alternativo: EXECUTAR");bs.alt.MouseButton1Click:Connect(function() run("alt","Painel Alternativo") end);bs.v2=mkB("Painel v2: EXECUTAR");bs.v2.MouseButton1Click:Connect(function() run("v2","Painel v2") end)
-local df=Instance.new("Frame",gui);df.Size,df.Position,df.BorderSizePixel,df.Visible=UDim2.new(0,250,0,175),UDim2.new(0.5,-125,0.5,-87),0,true;st(df,C1,nil,UDim.new(0,10),1.5);drg(df);local dh=Instance.new("TextLabel",df);dh.Size,dh.Text,dh.Font,dh.TextSize,dh.TextXAlignment=UDim2.new(1,0,0,34),"  PAINEL CNP BIEL975OI",Enum.Font.GothamBold,13,Enum.TextXAlignment.Left;st(dh,C2,C7,UDim.new(0,10));local dq=Instance.new("TextLabel",df);dq.Size,dq.Position,dq.BackgroundTransparency,dq.Text,dq.Font,dq.TextSize,dq.TextWrapped=UDim2.new(1,-20,0,42),UDim2.new(0,10,0,42),1,"Qual é o seu aparelho?\nComputador ou Celular?",Enum.Font.GothamSemibold,13,true;st(dq,nil,C7);for _,ch2 in ipairs({{"Computador",0.04,"Computador","Grande"},{"Celular",0.52,"Celular","Pequeno"}}) do local cb=Instance.new("TextButton",df);cb.Size,cb.Position,cb.Text,cb.Font,cb.TextSize=UDim2.new(0.44,0,0,42),UDim2.new(ch2[2],0,0,104),ch2[1],Enum.Font.GothamBold,13;st(cb,C3,C7,UDim.new(0,7),1);cb.MouseButton1Click:Connect(function() dev=ch2[3];df.Visible,tog.Visible,mf.Visible=false,true,true;rsz(ch2[4]);ui();nt("Modo "..ch2[3].." selecionado ("..ch2[4]..").") end) end
-if lp.Character then hookCh(lp.Character) end;lp.CharacterAdded:Connect(hookCh);nt("Selecione Computador ou Celular para abrir.")
+--========================================================
+-- PAINEL CNP BIEL975OI (TIKTOK: _LONGLIIFEE)
+--========================================================
+
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+local CoreGui = game:GetService("CoreGui")
+local Debris = game:GetService("Debris")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Lighting = game:GetService("Lighting")
+
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+local cam = workspace.CurrentCamera
+
+for _, guiName in ipairs({ "PainelCNP", "Erick_Ultra_Hub", "Lup_Jump_Hub" }) do
+	if CoreGui:FindFirstChild(guiName) then
+		CoreGui[guiName]:Destroy()
+	end
+end
+
+--========================
+-- CORES DO TEMA (PRETO + ROXO + BRANCO)
+--========================
+local COLOR_BG_MAIN      = Color3.fromRGB(16, 16, 20)
+local COLOR_BG_HEADER    = Color3.fromRGB(24, 20, 34)
+local COLOR_BTN_OFF      = Color3.fromRGB(228, 84, 96)
+local COLOR_BTN_ON       = Color3.fromRGB(82, 198, 118)
+local COLOR_BTN_EXEC     = Color3.fromRGB(30, 26, 42)
+local COLOR_BTN_ACTIVE   = Color3.fromRGB(115, 62, 195)
+local COLOR_TOGGLE_BG    = Color3.fromRGB(22, 18, 32)
+local COLOR_STROKE_MAIN  = Color3.fromRGB(152, 102, 235)
+local COLOR_STROKE_BTN   = Color3.fromRGB(152, 102, 235)
+local COLOR_TEXT_WHITE   = Color3.fromRGB(255, 255, 255)
+local COLOR_TEXT_SUB     = Color3.fromRGB(240, 235, 255)
+
+--========================
+-- TAMANHOS DISPONÍVEIS
+--========================
+local PANEL_SIZES = {
+	Pequeno = UDim2.new(0, 205, 0, 295),
+	Medio   = UDim2.new(0, 245, 0, 350),
+	Grande  = UDim2.new(0, 275, 0, 385),
+}
+local SIZE_CYCLE = { "Pequeno", "Medio", "Grande" }
+
+--========================
+-- CONFIG DO SCRIPT
+--========================
+local SIDE_ACCEL = 210
+local SIDE_MAX_SPEED = 210
+local TURN_SPEED_BONUS = 45
+local TURN_ACCEL_BONUS = 135
+
+local BOOST_FORCE = 110
+local BOOST_COOLDOWN = 0.20
+local TURN_WINDOW = 0.35
+local TURN_DEG_REQUIRED = 50
+
+local BACK_BIAS = 1.00
+local FORWARD_ONLY_DOT = 0.92
+local SIDE_ONLY_MAX = 0.12
+
+local WALL_DIST = 2.5
+local MAX_VERTICAL_SPEED = 90
+
+local INCLINE_UPVECTOR_Y = 0.7
+local JUMP_INCLINE_FORCE_Y = 170
+local JUMP_SPEED_BOOST = 300
+
+local BALLOON_TOOL_NAME = "Water Balloon"
+local BALLOON_COLOR = Color3.fromRGB(236, 92, 114)
+local BALLOON_TIP_COLOR = Color3.fromRGB(132, 36, 54)
+local BALLOON_SPLASH_COLOR = Color3.fromRGB(130, 215, 255)
+local BALLOON_SPEED = 105
+local BALLOON_COOLDOWN = 0.20
+
+local REMOTE_URLS = {
+	coins = "https://raw.githubusercontent.com/oipdrin971-source/mm2-script/main/anti_coins_mm2.lua",
+	yd7   = "https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua",
+	alt   = "https://pastefy.app/w0BKiXTR/raw",
+	mira  = "https://pastebin.com/raw/UVB1v26b",
+	v2    = "https://scriptblox.com/raw/Universal-Script-Gold-bomb-script-223141",
+}
+
+--========================
+-- STATE
+--========================
+local deviceType = nil
+local currentSizeName = "Medio"
+
+local spOn = false
+local man = false
+local jpOn = false
+local ltOn = false
+local blOn = false
+local acOn = false
+local nrOn = false
+local miraOn = false
+
+local loaded = {}
+local char, hum, hrp
+local baseWalkSpeed = 16
+local dirPressed = nil
+local pendingTurn = nil
+local lastBoost = 0
+local lastBalloonThrow = 0
+local lastYaw = nil
+
+local lightingBackup = nil
+local lightingObjects = {}
+
+local emoteActive = false
+local emoteTracks = {}
+local holdingS = false
+local holdingAD = false
+local debounceCombo = false
+
+local animPlayedConn, toolAddedConn, toolRemovedConn, inclineJumpConn, jumpBoostConn
+
+--========================
+-- HELPERS
+--========================
+local function notify(text, dur)
+	pcall(function()
+		StarterGui:SetCore("SendNotification", {
+			Title = "PAINEL CNP BIEL975OI",
+			Text = tostring(text or ""),
+			Duration = dur or 2
+		})
+	end)
+end
+
+local function flat(v)
+	local xz = Vector3.new(v.X, 0, v.Z)
+	return xz.Magnitude < 1e-6 and Vector3.zero or xz.Unit
+end
+
+local function wrap(a)
+	return (a + math.pi) % (2 * math.pi) - math.pi
+end
+
+local function getYaw()
+	local lv = cam.CFrame.LookVector
+	return math.atan2(lv.X, lv.Z)
+end
+
+local function inAir()
+	return hum and hum.FloorMaterial == Enum.Material.Air and hum:GetState() ~= Enum.HumanoidStateType.Climbing
+end
+
+local function wallBlocked(d)
+	if not hrp or not char then return false end
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = { char }
+	return workspace:Raycast(hrp.Position, d * WALL_DIST, params) ~= nil
+end
+
+local function setVel(v)
+	if hrp then
+		hrp.AssemblyLinearVelocity = Vector3.new(
+			v.X,
+			math.clamp(v.Y, -MAX_VERTICAL_SPEED, MAX_VERTICAL_SPEED),
+			v.Z
+		)
+	end
+end
+
+local function isSheriff()
+	local bp = player:FindFirstChild("Backpack")
+	if bp and (bp:FindFirstChild("Sheriff") or bp:FindFirstChild("Gun")) then return true end
+	if char and (char:FindFirstChild("Sheriff") or char:FindFirstChild("Gun")) then return true end
+
+	local ok, res = pcall(function()
+		local rf = ReplicatedStorage:FindFirstChild("GetPlayerData") or ReplicatedStorage:FindFirstChildWhichIsA("RemoteFunction", true)
+		if rf and rf:IsA("RemoteFunction") then
+			local data = rf:InvokeServer()
+			if type(data) == "table" and data[player.Name] and tostring(data[player.Name].Role):lower():find("sheriff", 1, true) then
+				return true
+			end
+		end
+		for _, obj in ipairs(player:GetDescendants()) do
+			if (obj:IsA("StringValue") or obj:IsA("ObjectValue")) and tostring(obj.Value):lower():find("sheriff", 1, true) then
+				return true
+			end
+		end
+		return false
+	end)
+
+	return ok and res or false
+end
+
+local function hasWaterBalloon()
+	if char then
+		for _, obj in ipairs(char:GetChildren()) do
+			if obj:IsA("Tool") and obj.Name:lower():find("balloon", 1, true) then
+				return true
+			end
+		end
+	end
+	local bp = player:FindFirstChild("Backpack")
+	if bp then
+		for _, obj in ipairs(bp:GetChildren()) do
+			if obj:IsA("Tool") and obj.Name:lower():find("balloon", 1, true) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+local function isEmoteWheelTrack(track)
+	if not track then return false end
+	local nm = (track.Name or ""):lower()
+	local id = track.Animation and tostring(track.Animation.AnimationId or ""):lower() or ""
+	if nm:find("yungblud", 1, true) or nm:find("salto", 1, true) or nm:find("feliz", 1, true) or id:find("yungblud", 1, true) then
+		return true
+	end
+	local p = track.Priority
+	return (p == Enum.AnimationPriority.Action
+		or p == Enum.AnimationPriority.Action2
+		or p == Enum.AnimationPriority.Action3
+		or p == Enum.AnimationPriority.Action4)
+		and not nm:find("dance", 1, true)
+		and not id:find("dance", 1, true)
+end
+
+--========================
+-- GRÁFICO 2020
+--========================
+local function clearLighting2020()
+	for _, obj in ipairs(lightingObjects) do
+		if obj and obj.Parent then
+			obj:Destroy()
+		end
+	end
+	lightingObjects = {}
+end
+
+local function setGrafico2020(on)
+	if on then
+		if not lightingBackup then
+			local saved = {}
+			for _, item in ipairs(Lighting:GetChildren()) do
+				if item:IsA("PostEffect") or item:IsA("Sky") or item:IsA("Atmosphere") then
+					pcall(function()
+						table.insert(saved, item:Clone())
+					end)
+				end
+			end
+			lightingBackup = {
+				Brightness = Lighting.Brightness,
+				Ambient = Lighting.Ambient,
+				OutdoorAmbient = Lighting.OutdoorAmbient,
+				GlobalShadows = Lighting.GlobalShadows,
+				ClockTime = Lighting.ClockTime,
+				Children = saved
+			}
+		end
+
+		clearLighting2020()
+		for _, item in ipairs(Lighting:GetChildren()) do
+			if item:IsA("PostEffect") or item:IsA("Sky") or item:IsA("Atmosphere") then
+				item:Destroy()
+			end
+		end
+
+		Lighting.Brightness = 2.5
+		Lighting.Ambient = Color3.fromRGB(145, 145, 145)
+		Lighting.OutdoorAmbient = Color3.fromRGB(165, 165, 165)
+		Lighting.GlobalShadows = false
+		Lighting.ClockTime = 14
+
+		local cc = Instance.new("ColorCorrectionEffect", Lighting)
+		cc.Brightness, cc.Contrast, cc.Saturation = 0.06, 0.18, 0.25
+
+		local bl = Instance.new("BloomEffect", Lighting)
+		bl.Intensity, bl.Size, bl.Threshold = 0.3, 20, 1.3
+
+		table.insert(lightingObjects, cc)
+		table.insert(lightingObjects, bl)
+	else
+		clearLighting2020()
+		if not lightingBackup then return end
+		for _, item in ipairs(Lighting:GetChildren()) do
+			if item:IsA("PostEffect") or item:IsA("Sky") or item:IsA("Atmosphere") then
+				item:Destroy()
+			end
+		end
+		Lighting.Brightness = lightingBackup.Brightness
+		Lighting.Ambient = lightingBackup.Ambient
+		Lighting.OutdoorAmbient = lightingBackup.OutdoorAmbient
+		Lighting.GlobalShadows = lightingBackup.GlobalShadows
+		Lighting.ClockTime = lightingBackup.ClockTime
+		for _, c in ipairs(lightingBackup.Children) do
+			pcall(function()
+				c:Clone().Parent = Lighting
+			end)
+		end
+	end
+end
+
+--========================
+-- REFERÊNCIAS DE UI
+--========================
+local MainFrame
+local SizeCycleBtn
+local SmallSizeBtn, MediumSizeBtn, LargeSizeBtn
+local SpeedBtn, JumpSpeedBtn, InclineBtn, Lighting2020Btn
+local AntiCoinsBtn, AntiClickBtn, NoReloadBtn, WaterBalloonBtn, MiraBtn
+local Yd7EmotesBtn, AltPanelBtn, V2PanelBtn
+local StatusLabel
+local ExtraFrame, ExtraAntiBtn, ExtraReloadBtn
+local JumpFrame, JumpToggleBtn
+
+local function applyPanelSize(sizeName)
+	local target = PANEL_SIZES[sizeName] or PANEL_SIZES.Medio
+	currentSizeName = sizeName
+
+	if MainFrame then
+		MainFrame.Size = target
+		MainFrame.Position = UDim2.new(0.5, -target.X.Offset / 2, 0.5, -target.Y.Offset / 2)
+	end
+	if SizeCycleBtn then
+		SizeCycleBtn.Text = "Tamanho: " .. currentSizeName
+	end
+	if SmallSizeBtn then SmallSizeBtn.BackgroundColor3 = (currentSizeName == "Pequeno") and COLOR_BTN_ACTIVE or COLOR_BTN_EXEC end
+	if MediumSizeBtn then MediumSizeBtn.BackgroundColor3 = (currentSizeName == "Medio") and COLOR_BTN_ACTIVE or COLOR_BTN_EXEC end
+	if LargeSizeBtn then LargeSizeBtn.BackgroundColor3 = (currentSizeName == "Grande") and COLOR_BTN_ACTIVE or COLOR_BTN_EXEC end
+end
+
+local function setJumpSpeedState(ativo)
+	jpOn = ativo
+	if not jpOn and hum then
+		hum.WalkSpeed = baseWalkSpeed
+		dirPressed = nil
+	end
+	if JumpToggleBtn then
+		JumpToggleBtn.Text = jpOn and "Sistema: ON" or "Sistema: OFF"
+		JumpToggleBtn.TextColor3 = COLOR_TEXT_WHITE
+		JumpToggleBtn.BackgroundColor3 = jpOn and COLOR_BTN_ON or COLOR_BTN_OFF
+	end
+	if JumpSpeedBtn then
+		JumpSpeedBtn.Text = jpOn and "Impulso no Pulo: ON" or "Impulso no Pulo: OFF"
+		JumpSpeedBtn.TextColor3 = COLOR_TEXT_WHITE
+		JumpSpeedBtn.BackgroundColor3 = jpOn and COLOR_BTN_ON or COLOR_BTN_OFF
+	end
+	if JumpFrame then
+		JumpFrame.Visible = jpOn
+	end
+end
+
+local function updateUI()
+	local toggleRows = {
+		{ SpeedBtn, spOn, "Old Speed: ON", "Old Speed: OFF" },
+		{ JumpSpeedBtn, jpOn, "Impulso no Pulo: ON", "Impulso no Pulo: OFF" },
+		{ Lighting2020Btn, ltOn, "2020 grafico: ON", "2020 grafico: OFF" },
+		{ AntiClickBtn, acOn, "ANTI-CLICK: ON", "ANTI-CLICK: OFF" },
+		{ NoReloadBtn, nrOn, "NO RELOAD: ON", "NO RELOAD: OFF" },
+		{ WaterBalloonBtn, blOn, "Water Balloon: ON", "Water Balloon: OFF" },
+		{ MiraBtn, miraOn, "Mira Mobilador: ON", "Mira Mobilador: OFF" },
+	}
+
+	for _, row in ipairs(toggleRows) do
+		local btn = row[1]
+		if btn then
+			btn.Text = row[2] and row[3] or row[4]
+			btn.TextColor3 = COLOR_TEXT_WHITE
+			btn.BackgroundColor3 = row[2] and COLOR_BTN_ON or COLOR_BTN_OFF
+		end
+	end
+
+	if ExtraAntiBtn then
+		ExtraAntiBtn.Text = acOn and "ANTI-CLICK: ON" or "ANTI-CLICK: OFF"
+		ExtraAntiBtn.TextColor3 = COLOR_TEXT_WHITE
+		ExtraAntiBtn.BackgroundColor3 = acOn and COLOR_BTN_ON or COLOR_BTN_OFF
+	end
+	if ExtraReloadBtn then
+		ExtraReloadBtn.Text = nrOn and "NO RELOAD: ON" or "NO RELOAD: OFF"
+		
